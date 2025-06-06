@@ -1,0 +1,9 @@
+//
+//  secure.xcconfig
+//  RPGTV
+//
+//  Created by Breno Angelotti on 06/06/25.
+//
+
+PRODUCT_BUNDLE_IDENTIFIER = <<seu bundle aqui>>
+DEVELOPMENT_TEAM = <<seu time aqui>>
