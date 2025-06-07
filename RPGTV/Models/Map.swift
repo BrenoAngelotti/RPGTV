@@ -5,8 +5,9 @@
 //  Created by Breno Gregorio Angelotti on 05/06/25.
 //
 
-import SwiftData
+import AppKit
 import CoreGraphics
+import SwiftData
 
 @Model
 class Map {
@@ -17,4 +18,9 @@ class Map {
         self.name = name
         self.image = image
     }
+	
+	static let mock: Map = {
+		let image = NSImage(resource: .testMap).tiffRepresentation!
+		return Map(name: "Test Map", image: MapImage(data: image, scale: 1))
+	}()
 }

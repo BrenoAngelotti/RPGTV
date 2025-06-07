@@ -10,7 +10,6 @@ import SwiftUI
 struct GridView: View {
     var display: Display
     var origin: CGPoint = .zero
-    let inch: CGFloat = 25.4
     
     var body: some View {
         GeometryReader { geometry in
