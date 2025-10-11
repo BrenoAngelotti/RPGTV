@@ -19,8 +19,9 @@ class Map {
         self.image = image
     }
 	
-	static let mock: Map = {
-		let image = NSImage(resource: .testMap).tiffRepresentation!
-		return Map(name: "Test Map", image: MapImage(data: image, ppi: 80))
-	}()
+	init(named name: String, fromUrl url: URL) {
+		let image = NSImage(contentsOf: url)?.tiffRepresentation
+		self.name = name
+		self.image = MapImage(data: image)
+	}
 }

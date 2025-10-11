@@ -41,8 +41,10 @@ struct OpenMapView: View {
 }
 
 #Preview {
-    let image = NSImage(resource: .testMap).tiffRepresentation!
-    let map = Map(name: "New Map", image: MapImage(data: image, ppi: 80))
+	let mock: Map = {
+		let image = NSImage(resource: .testMap).tiffRepresentation!
+		return Map(name: "Test Map", image: MapImage(data: image, ppi: 80))
+	}()
     
-    OpenMapView(mapId: map.id)
+    return OpenMapView(mapId: mock.id)
 }

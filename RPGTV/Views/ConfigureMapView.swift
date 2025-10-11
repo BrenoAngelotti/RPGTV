@@ -188,5 +188,10 @@ struct ConfigureMapView: View {
 }
 
 #Preview {
-	ConfigureMapView(map: .mock)
+	let mock: Map = {
+		let image = NSImage(resource: .testMap).tiffRepresentation!
+		return Map(name: "Test Map", image: MapImage(data: image, ppi: 80))
+	}()
+	
+	return ConfigureMapView(map: mock)
 }
