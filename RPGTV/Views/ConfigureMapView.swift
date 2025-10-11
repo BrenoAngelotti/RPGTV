@@ -46,7 +46,7 @@ struct ConfigureMapView: View {
 							Rectangle()
 								.frame(width: gridPlacement.width, height: gridPlacement.height)
 								.position(.init(x: gridPlacement.midX, y: gridPlacement.midY))
-						} else {
+						} else if !isEditingGrid {
 							Rectangle()
 								.frame(width: 100, height: 100)
 								.position(visibleAreaMovingOffset)
