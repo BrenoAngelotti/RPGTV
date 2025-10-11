@@ -31,9 +31,9 @@ struct RPGTVApp: App {
         .modelContainer(sharedModelContainer)
         
         WindowGroup("Auxilary display", for: Map.ID.self) { $mapId in
-            OpenMapView(mapId: mapId, display: .current)
+			OpenMapView(mapId: mapId, display: .fixedTvTesting)
         }
         .modelContainer(sharedModelContainer)
-        .windowResizability(.contentSize)
+		.windowResizability(.contentMinSize)
     }
 }

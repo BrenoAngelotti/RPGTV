@@ -33,6 +33,10 @@ struct Size: Codable {
     init(_ cgSize: CGSize) {
         self.cgSize = cgSize
     }
+	
+	init(width: Double, height: Double) {
+		self.cgSize = .init(width: width, height: height)
+	}
     
     static let zero = Size(.zero)
 }

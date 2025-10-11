@@ -31,10 +31,19 @@ class Display {
         
         return .init(.init(width: xSpace, height: ySpace))
     }
+	
+	var ppi: CGFloat {
+		let inch = Measurement(value: 1, unit: UnitLength.inches).converted(to: .millimeters)
+		return resolution.width / size.width * inch.value
+	}
     
     static let iPadTesting: Display = {
-        return Display(name: "iPad Air 4th gen", size: .init(.init(width: 398.4658536585, height: 192.4220338983)), resolution: .init(.init(width: 2360, height: 1640)))
+        return Display(name: "iPad Air 4th gen", size: .init(width: 398.4658536585, height: 192.4220338983), resolution: .init(width: 2360, height: 1640))
     }()
+	
+	static let fixedTvTesting: Display = {
+		return Display(name: "TV Philco", size: .init(width: 611, height: 348), resolution: .init(width: 1920, height: 1080))
+	}()
     
     static let current: Display = {
         guard let mainScreen = NSScreen.main else {

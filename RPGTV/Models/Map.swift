@@ -21,6 +21,6 @@ class Map {
 	
 	static let mock: Map = {
 		let image = NSImage(resource: .testMap).tiffRepresentation!
-		return Map(name: "Test Map", image: MapImage(data: image, scale: 1))
+		return Map(name: "Test Map", image: MapImage(data: image, ppi: 80))
 	}()
 }

@@ -12,7 +12,8 @@ import SwiftUI
 struct MapImage: Codable {
     var data: Data?
     var origin: Point = .zero
-    var scale: Double = 1.0
+    var ppi: Double = 1.0
+	var isVisible: Bool = false
     
     var nsImage: NSImage? {
         guard
