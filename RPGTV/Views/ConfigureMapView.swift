@@ -33,37 +33,33 @@ struct ConfigureMapView: View {
     var body: some View {
 		VStack {
 			ZStack {
-				if let map, let image = map.image, let nsImage = image.nsImage {
-					GeometryReader { geometry in
-						Image(nsImage: nsImage)
-							.scaleEffect(movingScale)
-							.position(movingOffset)
-							.onAppear {
-								visibleAreaOffset = .init(x: geometry.size.height / 2, y: geometry.size.height / 2)
-							}
-								
-						if isDrawingGrid {
-							Rectangle()
-								.frame(width: gridPlacement.width, height: gridPlacement.height)
-								.position(.init(x: gridPlacement.midX, y: gridPlacement.midY))
-						} else if !isEditingGrid {
-							Rectangle()
-								.frame(width: 100, height: 100)
-								.position(visibleAreaMovingOffset)
-								.gesture(
-									DragGesture()
-										.onChanged({ value in
-											visibleAreaMovingOffset = CGPoint(x: visibleAreaOffset.x + value.translation.width, y: visibleAreaOffset.y + value.translation.height)
-										})
-										.onEnded({ value in
-											visibleAreaOffset = visibleAreaMovingOffset
-											updateVisibleArea()
-										})
-								)
+				GeometryReader { geometry in
+					Image(nsImage: map!.image!.nsImage!)
+						.scaleEffect(movingScale)
+						.position(movingOffset)
+						.onAppear {
+							visibleAreaOffset = .init(x: geometry.size.height / 2, y: geometry.size.height / 2)
 						}
+							
+					if isDrawingGrid {
+						Rectangle()
+							.stroke(style: StrokeStyle(lineWidth: 2, lineCap: .square, lineJoin: .bevel, miterLimit: 0, dash: [5], dashPhase: 5))
+							.frame(width: gridPlacement.width, height: gridPlacement.height)
+							.position(.init(x: gridPlacement.midX, y: gridPlacement.midY))
+					} else if !isEditingGrid {
+						Rectangle()
+							.frame(width: 100, height: 100)
+							.position(visibleAreaMovingOffset)
+							.gesture(DragGesture()
+								.onChanged { value in
+									visibleAreaMovingOffset = CGPoint(x: visibleAreaOffset.x + value.translation.width, y: visibleAreaOffset.y + value.translation.height)
+								}
+								.onEnded { value in
+									visibleAreaOffset = visibleAreaMovingOffset
+									updateVisibleArea()
+								}
+							)
 					}
-				} else {
-					Text("Start by adding a map")
 				}
 			}
 			.gesture(
@@ -95,42 +91,15 @@ struct ConfigureMapView: View {
 						}
 					})
 			)
-			.gesture(
-				MagnifyGesture(minimumScaleDelta: 0.1)
-					.onChanged({ value in
-						movingScale = currentScale * value.magnification
-					})
-					.onEnded({ value in
-						currentScale = movingScale
-					})
+			.gesture(MagnifyGesture(minimumScaleDelta: 0.1)
+				.onChanged { value in
+					movingScale = currentScale * value.magnification
+				}
+				.onEnded { value in
+					currentScale = movingScale
+				}
 			)
 		}
-//		.frame(minWidth: 600, minHeight: 400, alignment: .center)
-//		.inspector(isPresented: $isEditingFog) {
-//			Form {
-//				Section {
-//					Slider(
-//						value: $offset.x,
-//						in: 0...100,
-//						label: { Label("X offset", systemImage: "arrow.right.and.line.vertical.and.arrow.left") },
-//						onEditingChanged: { editing in
-//							print("offset changed to \(self.offset.x)")
-//						}
-//					)
-//					
-//					Slider(
-//						value: $offset.y,
-//						in: 0...100,
-//						label: { Label("Y offset", systemImage: "arrow.up.and.line.horizontal.and.arrow.down") },
-//						onEditingChanged: { editing in
-//							print("offset changed to \(self.offset.y)")
-//						}
-//					)
-//				} header: {
-//					Label("Set grid offset", systemImage: "grid")
-//				}
-//			}
-//		}
 		.toolbar {
 			if let map {
 				ToolbarItem(placement: .primaryAction) {
@@ -146,14 +115,6 @@ struct ConfigureMapView: View {
 						Label("Measure scale", systemImage: "ruler")
 					}
 				}
-				
-//				ToolbarItem(placement: .principal) {
-//					Button {
-//						isEditingFog.toggle()
-//					} label: {
-//						Label("Edit map", systemImage: "slider.horizontal.3")
-//					}
-//				}
 				
 				ToolbarItem(placement: .principal) {
 					Button {

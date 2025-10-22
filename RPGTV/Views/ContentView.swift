@@ -13,6 +13,10 @@ struct ContentView: View {
     
     @Query private var maps: [Map]
 	@State private var isShowingFileImporter = false
+	@State private var isShowingMapNameDialog = false
+	
+	@State private var mapName = ""
+	@State private var mapURL: URL?
 	
     var body: some View {
         NavigationSplitView {
@@ -39,22 +43,29 @@ struct ContentView: View {
 						  allowsMultipleSelection: false) { result in
 				switch result {
 				case .success(let urls):
-					for url in urls {
-						addMap(withUrl: url)
-					}
+					mapURL = urls.first
+					isShowingMapNameDialog.toggle()
 				case .failure(let error):
 					print("File selection error: \(error.localizedDescription)")
 				}
+			}
+			.alert("Map name", isPresented: $isShowingMapNameDialog) {
+				TextField("Name", text: $mapName)
+				Button("OK") {
+					addMap()
+				}
+				Button("Cancel", role: .cancel) {}
 			}
         } detail: {
             Text("Select a map")
         }
     }
 
-	private func addMap(withUrl url: URL) {
+	private func addMap() {
+		guard let mapURL else { return }
         withAnimation {
-			if url.startAccessingSecurityScopedResource() {
-				modelContext.insert(Map(named: "Sample", fromUrl: url))
+			if mapURL.startAccessingSecurityScopedResource() {
+				modelContext.insert(Map(named: mapName.isEmpty ? "New map" : mapName, fromUrl: mapURL))
 			}
             try? modelContext.save()
         }
